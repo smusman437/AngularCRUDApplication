@@ -1,0 +1,59 @@
+<div *ngIf="viewMode; else editable">
+    <div *ngIf="currentTodo.id">
+        <h4>Todo</h4>
+        <div>
+            <label><strong>Title:</strong></label> {{ currentTodo.title }}
+        </div>
+        <div>
+            <label><strong>Status:</strong></label>
+            {{ currentTodo.completed ? "Completed" : "In Progess" }}
+        </div>
+
+        <a class="btn btn-outline-warning text-dark" routerLink="/todos/{{ currentTodo.id }}">
+            Edit
+        </a>
+    </div>
+
+    <div *ngIf="!currentTodo.id">
+        <br />
+        <p>Please click on a Todo...</p>
+    </div>
+</div>
+
+<ng-template #editable>
+    <div *ngIf="currentTodo.id" class="edit-form">
+        <h4>Todo</h4>
+        <form>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" [(ngModel)]="currentTodo.title" name="title" />
+            </div>
+
+            <div class="form-group">
+                <label><strong>Status:</strong></label>
+                {{ currentTodo.completed ? "Completed" : "In Progess" }}
+            </div>
+        </form>
+
+        <button class="btn btn-outline-primary" *ngIf="currentTodo.completed" (click)="updateStatus(false)">
+            In Progress
+        </button>
+        <button *ngIf="!currentTodo.completed" class="btn btn-outline-primary" (click)="updateStatus(true)">
+            Completed
+        </button>
+
+        <button class="btn btn-outline-danger m-2" (click)="deleteTodo()">
+            Delete
+        </button>
+
+        <button type="submit" class="btn btn-outline-success" (click)="updateTodo()">
+            Update
+        </button>
+        <p class="mt-2">{{ message }}</p>
+    </div>
+
+    <div *ngIf="!currentTodo.id">
+        <br />
+        <p>Cannot access this Todo...</p>
+    </div>
+</ng-template>
